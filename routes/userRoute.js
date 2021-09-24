@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const userRouter = express.Router();
 const User = require('../models/userModel');
 const generateToken = require('../config/utils');
+const isTokenValid = require('../middlewares/tokenMiddleware');
+const isAuth = require('../middlewares/authMiddleware');
 
 userRouter.post("/register", expressAsyncHandler(async (req, res) => {
     const {
@@ -80,5 +82,17 @@ userRouter.post(
         }
     })
 );
+
+userRouter.get('/logout', isTokenValid, isAuth, expressAsyncHandler(async(req, res) => {
+    await User.findOneAndUpdate({
+        email: req.user.email
+    }, {
+        token: null
+    });
+    res.status(201).json({
+        message:"user logout successfully",
+        status: 201
+    })
+}))
 
 module.exports = userRouter;
