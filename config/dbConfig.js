@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/album', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/album', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
