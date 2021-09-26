@@ -79,7 +79,7 @@ homeRouter.post('/get-all-image', isTokenValid, isAuth, expressAsyncHandler(asyn
         limit
     } = req.body;
     const skip = (pageNumber - 1) * limit;
-    let query = Image.find().sort('-createdAt').skip(skip).limit(parseInt(limit))
+    let query = Image.find({userID: mongoose.Types.ObjectId(req.user._id)}).sort('-createdAt').skip(skip).limit(parseInt(limit))
     const imageList = await query.exec();
     res.status(200).json({
         message: 'all image fetched',
