@@ -33,9 +33,9 @@ const imageUpload = multer({
 
 homeRouter.post('/upload-image', isTokenValid, isAuth, imageUpload.single('image'), expressAsyncHandler(async (req, res) => {
     const host = req.hostname;
-    const port = process.env.PORT || 4000
+    // const port = process.env.PORT || 4000
     const imageData = new Image({
-        imageName: `${host}:${port}/${req.file.filename}`,
+        imageName: `${host}/${req.file.filename}`,
         userID: mongoose.Types.ObjectId(req.user._id)
     })
     await imageData.save();
@@ -47,7 +47,7 @@ homeRouter.post('/upload-image', isTokenValid, isAuth, imageUpload.single('image
 
 homeRouter.post('/upload-base64-image', isTokenValid, isAuth, expressAsyncHandler(async (req, res) => {
     const host = req.hostname;
-    const port = process.env.PORT || 4000
+    // const port = process.env.PORT || 4000
     var matches = req.body.base64image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/),
         response = {};
     if (matches.length !== 3) {
@@ -62,7 +62,7 @@ homeRouter.post('/upload-base64-image', isTokenValid, isAuth, expressAsyncHandle
     let fileName = `image_${Date.now()}.${extension}`;
     fs.writeFileSync("./images/" + fileName, imageBuffer, 'utf8');
     const imageData = new Image({
-        imageName: `${host}:${port}/${fileName}`,
+        imageName: `${host}/${fileName}`,
         userID: mongoose.Types.ObjectId(req.user._id)
     })
     await imageData.save();
